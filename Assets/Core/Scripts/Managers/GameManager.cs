@@ -4,7 +4,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
-public class GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager instance;
 
@@ -20,6 +20,24 @@ public class GameManager : MonoBehaviourPun
     public void ConnectToServer()
     {
         NetworkSettings();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        RoomOptions options = new RoomOptions();
+        options.IsOpen = true;
+        options.IsVisible = true;
+        options.MaxPlayers = 4;
+        PhotonNetwork.JoinOrCreateRoom("Marqe", options, PhotonNetwork.CurrentLobby);
+    }
+
+    public override void OnJoinedRoom()
+    {
         PhotonNetwork.LoadLevel("GameMenu");
     }
 
