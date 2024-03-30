@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class GameManager : MonoBehaviourPunCallbacks
@@ -15,35 +16,81 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         instance = this;
         DontDestroyOnLoad(gameObject);
+        PhotonNetwork.LoadLevel("MainMenu");
     }
 
-    public void ConnectToServer()
+    public void Disconnect()
     {
+        PhotonNetwork.LoadLevel("MainMenu");
+        UIManager.instance.OpenMenu("DisconnectMenu");
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
+        if (PhotonNetwork.NetworkClientState == ClientState.Disconnected)
+            UIManager.instance.OpenMenu("MainMenu");
+    }
+
+    public void SinglePlayer()
+    {
+        UIManager.instance.OpenMenu("LoadingMenu");
+        PhotonNetwork.OfflineMode = true; 
+        JoinLobby();
+    }
+
+    public void MultiPlayer()
+    {
+        UIManager.instance.OpenMenu("LoadingMenu");
+        PhotonNetwork.OfflineMode = false;
         NetworkSettings();
+        JoinLobby();
     }
 
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinLobby();
+        if (PhotonNetwork.IsConnected && PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer)
+            JoinLobby();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        UIManager.instance.OpenMenu("DisconnectMenu");
+        if (PhotonNetwork.NetworkClientState == ClientState.Disconnected)
+        {
+            UIManager.instance.OpenMenu("MainMenu");
+            PhotonNetwork.LoadLevel("MainMenu");
+        }
+        Debug.Log(cause);
+    }
+
+    public void JoinLobby()
+    {
+        if (PhotonNetwork.OfflineMode)
+        {
+            PhotonNetwork.LoadLevel("LobbyMenu");
+            UIManager.instance.OpenMenu("LobbyMenu");
+        }
+        else if (PhotonNetwork.IsConnected && PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer)
+        {
+            PhotonNetwork.JoinLobby();
+            UIManager.instance.OpenMenu("LobbyMenu");
+        }
     }
 
     public override void OnJoinedLobby()
     {
-        RoomOptions options = new RoomOptions();
-        options.IsOpen = true;
-        options.IsVisible = true;
-        options.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom("Marqe", options, PhotonNetwork.CurrentLobby);
-    }
-
-    public override void OnJoinedRoom()
-    {
-        PhotonNetwork.LoadLevel("GameMenu");
+        PhotonNetwork.LoadLevel("LobbyMenu");
+        //RoomOptions options = new RoomOptions();
+        //options.IsOpen = true;
+        //options.IsVisible = true;
+        //options.MaxPlayers = 4;
+        //PhotonNetwork.JoinOrCreateRoom("Marqe", options, PhotonNetwork.CurrentLobby);
     }
 
     public void QuitGame()
     {
-        Application.Quit();
+        if (EditorApplication.isPlaying)
+            EditorApplication.isPlaying = false;
+        if (Application.isPlaying)
+            Application.Quit();
     }
 
     private void NetworkSettings()

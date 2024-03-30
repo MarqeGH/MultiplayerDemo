@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 147378348802730432}
   - component: {fileID: 718376614551643515}
   m_Layer: 5
-  m_Name: MessageTxt
+  m_Name: ChatTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,8 +146,9 @@ GameObject:
   - component: {fileID: 1066989749071169684}
   - component: {fileID: 8529324437162897377}
   - component: {fileID: 6394790991720523117}
+  - component: {fileID: 8854052265074037620}
   m_Layer: 5
-  m_Name: MessageBtn
+  m_Name: ChatBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,3 +256,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8854052265074037620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5470012661349996213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802947183dcf41147bf4839c49b3930f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
