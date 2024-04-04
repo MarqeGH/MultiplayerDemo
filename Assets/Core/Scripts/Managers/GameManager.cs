@@ -19,6 +19,37 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("MainMenu");
     }
 
+    public void LoadGame(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                PhotonNetwork.LoadLevel("Game1");
+                break;
+            case 1:
+                PhotonNetwork.LoadLevel("Game2");
+                break;
+            case 2:
+                PhotonNetwork.LoadLevel("Game3");
+                break;
+            case 3:
+                PhotonNetwork.LoadLevel("Game4");
+                break;
+            case 4:
+                PhotonNetwork.LoadLevel("Game5");
+                break;
+            case 5:
+                PhotonNetwork.LoadLevel("Game6");
+                break;
+            case 6:
+                PhotonNetwork.LoadLevel("Game7");
+                break;
+            case 7:
+                PhotonNetwork.LoadLevel("Game8");
+                break;
+        }
+    }
+
     public void Disconnect()
     {
         PhotonNetwork.LoadLevel("MainMenu");
